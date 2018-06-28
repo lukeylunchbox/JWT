@@ -6,22 +6,58 @@ const bodyParser = require('body-parser');
 const app = express()
 app.use(bodyParser.json())
 
-const user = {
-    email: "email@example.com",
-    password: "password123"
-}
 
 // app.get('/api', (req,res) => {
 //     res.sendFile(path.join(__dirname + '/index.html'));
 // })
 
-app.post('/api', (req,res) => {
-    if(user.email == req.body.email && user.password == req.body.password){
-        let token = jwt.sign({ name: 'Luke' }, 'this is a secret')
-        res.send(token) 
+// Verify Token
+const verifyToken = (req, res, next) => {
+    // Get authorization header value
+    // Header Format: Authorization: Bearer <token>
+      const bearerHeader = req.headers['authorization']
+      console.log(bearerHeader)
+        if(bearerHeader !== undefined){
+            const tokenArray = bearerHeader.split(" ")
+            const bToken = tokenArray[1]
+            req.token = bToken
+        }
+        else {res.sendStatus(403)}
+        next()
     }
-    else {console.log('you are not authorised')}
+    
+
+    
+app.post('/api/posts', verifyToken, (req,res) => {
+    jwt.verify(req.token, 'this is a secret', (err, authData) => {
+        if(err){
+          res.sendStatus(403)
+        }
+        else {
+            // res.json({message: "Post created",
+            // authData
+            res.send({message: "Post created",
+        authData})
+     
+        }
+    })
+      
 })
+
+
+app.post('/api/login',(req,res) => {
+    const user = {
+        email: "email@example.com",
+        password: "password123"
+    }
+
+ jwt.sign({ user: user }, 'this is a secret', (err, token) => {
+        res.send({token}) 
+    })
+
+})
+
+
 
 app.listen(5000, () => {
     console.log('server running on 5000')

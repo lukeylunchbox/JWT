@@ -1,7 +1,15 @@
-POST http://localhost:5000/api
+POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
     "email": "email@example.com",
     "password": "password123"
 }
+
+
+
+
+###
+POST http://localhost:5000/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZW1haWxAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIn0sImlhdCI6MTUzMDE0OTkwMX0.qrWjhV8sGShBxbsMiFBVfqppKOSXM-GgbLOkxv77SOE
